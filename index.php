@@ -159,7 +159,194 @@ $recipes = [
 
         <?php endif; ?>
     <?php endforeach ?>
+    <br><br>
 </div>
 </body>
 </html>
 
+<?php
+$recipe = 'Etape 1 : des flageolets ! Etape 2 : de la saussice toulousaine';
+$length = strlen($recipe);
+
+
+echo 'La phrase suivante comporte '. $length . ' caractères :' . PHP_EOL . $recipe;
+?>
+<br><br>
+<?php
+echo str_replace('c','C','Le cassoulet, c\'est très bon');
+?>
+<br><br>
+<?php
+$recipe = [
+    'title' => 'Salade Romaine',
+    'recipe' => 'Etape 1 : Lavez la salade ; Etape 2 : euh ...',
+    'author' => 'laurene.castor@exemple.com',
+];
+
+echo sprintf(
+    '%s par "%s" : %s',
+    $recipe['title'],
+    $recipe['author'],
+    $recipe['recipe']
+);
+?>
+<br><br>
+<?php
+// Enregistrons les informations de date dans des variables
+
+$day = date('d');
+$month = date('m');
+$year = date('Y');
+
+$hour = date('H');
+$minute = date('i');
+
+// Maintenant on peut afficher ce qu'on a recueilli
+echo 'Bonjour ! Nous sommes le ' . $day . '/' . $month . '/' . $year . ' et il est ' . $hour. ' h ' . $minute . ' !';
+?>
+<br><br>
+<?php
+// Enregistrons les informations de date dans des variables
+$date = date('d/m/Y');
+$time = date('H \h i');
+
+// Maintenant on peut afficher ce qu'on a recueilli
+echo "Bonjour ! Nous sommes le {$date} et il est {$time}";
+?>
+<br><br>
+<?php
+
+function isValidRecipe(array $recipe) : bool
+{
+    if(array_key_exists('is_enabled', $recipe)) {
+        $isEnabled = $recipe['is_enabled'];
+    } else {
+        $isEnabled = false;
+    }
+    return $isEnabled;
+}
+// 2 exemples
+$romanSalad = [
+    'title' => 'Salade Romaine',
+    'recipe' => 'Etape 1 : Lavez la salade ; Etape 2 : euh ...',
+    'author' => 'laurene.castor@exemple.com',
+    'is_enabled' => true,
+];
+
+$sushis = [
+    'title' => 'Sushis',
+    'recipe' => 'Etape 1 : du saumon ; Etape 2 : du riz',
+    'author' => 'laurene.castor@exemple.com',
+    'is_enabled' => false,
+];
+
+
+// Répond true !
+$isRomandSaladValid = isValidRecipe($romanSalad);
+
+// Répond false !
+$isSushisValid = isValidRecipe($sushis);
+
+
+
+
+
+
+function getRecipes(array $recipes) : array
+{
+    $validRecipes = [];
+
+    foreach($recipes as $recipe) {
+        if (isValidRecipe($recipe)) {
+            $validRecipes[] = $recipe;
+        }
+    }
+
+    return $validRecipes;
+}
+
+// construire l'affichage HTML des recettes
+foreach(getRecipes($recipes) as $recipe) {
+    // echo $recipe['title'] .. 
+}
+
+function displayAuthor(string $authorEmail, array $users): string
+{
+    foreach ($users as $user) {
+        if ($authorEmail === $user['email']) {
+            return $user['full_name'] . '(' . $user['age'] . ' ans)';
+        }
+    }
+}
+
+
+
+?>
+
+<?php
+
+$users = [
+    [
+        'full_name' => 'Mickaël Andrieu',
+        'email' => 'mickael.andrieu@exemple.com',
+        'age' => 34,
+    ],
+    [
+        'full_name' => 'Mathieu Nebra',
+        'email' => 'mathieu.nebra@exemple.com',
+        'age' => 34,
+    ],
+    [
+        'full_name' => 'Laurène Castor',
+        'email' => 'laurene.castor@exemple.com',
+        'age' => 28,
+    ],
+];
+
+$recipes = [
+    [
+        'title' => 'Cassoulet',
+        'recipe' => 'Etape 1 : des flageolets !',
+        'author' => 'mickael.andrieu@exemple.com',
+        'is_enabled' => true,
+    ],
+    [
+        'title' => 'Couscous',
+        'recipe' => 'Etape 1 : de la semoule',
+        'author' => 'mickael.andrieu@exemple.com',
+        'is_enabled' => false,
+    ],
+    [
+        'title' => 'Escalope milanaise',
+        'recipe' => 'Etape 1 : prenez une belle escalope',
+        'author' => 'laurene.castor@exemple.com',
+        'is_enabled' => true,
+    ],
+];
+
+
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Recettes de cuisine</title>
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+</head>
+<body>
+<div class="container">
+    <h1>Liste des recettes de cuisine</h1>
+
+    <?php foreach (getRecipes($recipes) as $recipe) : ?>
+        <article>
+            <h3><?php echo $recipe['title']; ?></h3>
+            <div><?php echo $recipe['recipe']; ?></div>
+            <i><?php echo displayAuthor($recipe['author'], $users); ?></i>
+        </article>
+    <?php endforeach ?>
+</div>
+</body>
+</html>
