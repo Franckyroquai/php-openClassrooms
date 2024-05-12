@@ -45,7 +45,7 @@ if (isset($_FILES['screenshot']) && $_FILES['screenshot']['error'] === 0) {
         // On peut valider le fichier et le stocker définivement
         move_uploaded_file($_FILES['screenshot']['tmp_name'], $path . basename($_FILES['screenshot']['name']));
         $isFileLoaded = true;
-        }
+   }
 ?>
 
 <!DOCTYPE html>
